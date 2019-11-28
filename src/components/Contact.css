@@ -1,0 +1,12 @@
+.contact {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #bbb;
+  background-color: #eee;
+}
+
+.contact span {
+  font-size: 1.2em;
+  text-decoration: none;
+  color: #333;
+}
