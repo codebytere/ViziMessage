@@ -12,13 +12,12 @@ const createWindow = () => {
   });
 
   win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-  // win.webContents.openDevTools();
 
   ipcMain.handle('get-contact-data', async (event) => {
     return getContacts();
   });
 
-  win.on('closed', () => { win= null; });
+  win.on('closed', () => { win = null; });
 };
 
 app.on('ready', () => {
