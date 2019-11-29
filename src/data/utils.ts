@@ -1,5 +1,5 @@
-import { DAY } from '../constants';
 import moment from 'moment';
+import { DAY } from '../constants';
 
 /**
  * Returns a normalized phone number in E.164 format.
@@ -25,10 +25,10 @@ export function  normalizeNumber (number: string) {
  */
 export function formattedDate (ts: number) {
   const DATE_OFFSET = 978307200;
-  if (ts.toString().length >= 18) ts = ts / 1000000000;
+  if (ts.toString().length >= 18) { ts = ts / 1000000000; }
 
   const unpacked = Math.floor(ts / Math.pow(10, 9));
-  if (unpacked !== 0) ts = unpacked;
+  if (unpacked !== 0) { ts = unpacked; }
 
   return new Date((ts + DATE_OFFSET) * 1000);
 };
@@ -40,7 +40,7 @@ export function formattedDate (ts: number) {
  * @returns an object containing messages from them, myself, and the total.
  */
 export function cleanData (data: RawData[]) {
-  let cleaned: ContactMessageData = {
+  const cleaned: ContactMessageData = {
     total: 0,
     fromMe: [],
     fromThem: []

@@ -1,7 +1,7 @@
-import { getAuthStatus, getAllContacts } from 'node-mac-contacts';
+import { getAllContacts, getAuthStatus } from 'node-mac-contacts';
 import { Database, OPEN_READWRITE } from 'sqlite3';
 
-import { normalizeNumber, cleanData } from './utils';
+import { cleanData, normalizeNumber } from './utils';
 
 let contacts: ContactInfo[] = [];
 let db: any;
@@ -66,7 +66,7 @@ function mapContact (contact: ContactInfo, index: number) {
  * @param ids - an array of unique users ids.
  * @returns an Object with data about all messages exchanged with a 
  */
-async function getMessages (ids: Array<string>) {
+async function getMessages (ids: string[]) {
   return new Promise((resolve, reject) => {
     const query = `
       SELECT ROWID, text, service,
@@ -121,7 +121,7 @@ export const getContact = (name: string) => {
 export async function initializeDatabase() {
   const messageDBPath = '/Users/codebytere/Library/Messages/chat.db';
   db = new Database(messageDBPath, OPEN_READWRITE, (err) => {
-    if (err) console.error(err);
+    if (err) { console.error(err); }
   });
 
   const status = getAuthStatus();
@@ -139,6 +139,6 @@ export async function initializeDatabase() {
 */
 export function shutdownDatabase() {
   db.close((err: string) => {
-    if (err) console.error(err);
+    if (err) { console.error(err); }
   });
 }
