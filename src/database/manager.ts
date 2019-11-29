@@ -3,7 +3,7 @@ import { Database, OPEN_READWRITE } from 'sqlite3';
 
 import { normalizeNumber, cleanData } from './utils';
 
-let contacts: Contact[] = [];
+let contacts: ContactInfo[] = [];
 let db: any;
 
 /***** HELPER FUNCTIONS *****/
@@ -21,7 +21,7 @@ let db: any;
  */
 async function getUniqueIDs (number: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
-    const query = `SELECT ROWID from chat WHERE chat_identifier = ${number}`;
+    const query = `SELECT ROWID from chat WHERE chat_identifier = '${number}'`;
     db.all(query, (err: string, data: any) => {
       if (err) {
         reject(err);
@@ -40,9 +40,9 @@ async function getUniqueIDs (number: string): Promise<string[]> {
  * @param index - the unique index to associate with a Contact
  * @returns the updated Contact with iMessage data
  */
-function mapContact (contact: Contact, index: number) {
-  const contactData: Contact = {
-    id: index,
+function mapContact (contact: ContactInfo, index: number) {
+  const contactData: ContactInfo = {
+    id: index.toString(),
     firstName: contact.firstName,
     lastName: contact.lastName,
     phoneNumbers: contact.phoneNumbers.map((n: string) => {
@@ -66,7 +66,7 @@ function mapContact (contact: Contact, index: number) {
  * @param ids - an array of unique users ids.
  * @returns an Object with data about all messages exchanged with a 
  */
-function getMessages (ids: Array<string>) {
+async function getMessages (ids: Array<string>) {
   return new Promise((resolve, reject) => {
     const query = `
       SELECT ROWID, text, service,
@@ -108,7 +108,7 @@ export const getContacts = () => contacts;
  * @returns the matching Contact
  */
 export const getContact = (name: string) => {
-  return contacts.filter((c: Contact) => {
+  return contacts.filter((c: ContactInfo) => {
     return c.firstName === name || c.lastName === name;
   })
 }
@@ -128,7 +128,7 @@ export async function initializeDatabase() {
   if (status !== 'Authorized') {
     throw new Error('Access to contacts was not authorized.');
   } else {
-    contacts = getAllContacts().map((c: Contact, idx: number) => {
+    contacts = getAllContacts().map((c: ContactInfo, idx: number) => {
       return mapContact(c, idx);
     });
   }

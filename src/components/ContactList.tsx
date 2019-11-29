@@ -1,14 +1,40 @@
 import React from "react";
-import Contact from "./Contact";
+import './ContactList.css';
 
-function ContactList(props: any) {
-  return (
-    <div>
-      {props.contacts.map((c: any) => {
-        return <Contact key={c.id} first={c.firstName} last={c.lastName} />
-      })}
-    </div> 
-  );
+type ContactListProps = {
+  contacts: ContactInfo[],
+  changeContact: Function,
+}
+
+class ContactList extends React.Component<ContactListProps, {}> {
+  constructor(props: ContactListProps) {
+    super(props);
+    this.performChange = this.performChange.bind(this);
+  }
+
+  performChange(e: any) {
+    if (e.target) {
+      const id = e.target.id;
+      this.props.changeContact(id);
+    }
+  }
+
+  render() {
+    const { contacts } = this.props;
+    return (
+      <div className="contactList">
+        {contacts.map((c: ContactInfo) => {
+          return (
+            <div className="contact">
+              <button id={c.id.toString()} onClick={this.performChange}>
+                {c.firstName} {c.lastName}
+              </button>
+            </div>
+          )
+        })}
+      </div> 
+    );
+  }
 }
 
 export default ContactList;

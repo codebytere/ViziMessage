@@ -6,12 +6,12 @@ interface ContactMessageData {
   fromThem: any[],
 }
 
-interface Contact {
-  id: number;
+interface ContactInfo {
+  id: string;
   firstName: string;
   lastName: string,
   phoneNumbers: string[],
-  messages: Record<string, ContactMessage>
+  messages: Record<string, ContactMessageData>
 }
 
 interface RawData {

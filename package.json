@@ -1,8 +1,8 @@
 {
-  "name": "vizzimessage",
-  "productName": "vizzimessage",
+  "name": "vizimessage",
+  "productName": "vizimessage",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Visualize your iMessage history and interactions.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -50,7 +50,6 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
     "fork-ts-checker-webpack-plugin": "^3.1.1",
     "node-mac-contacts": "^0.2.0",
     "react": "^16.12.0",
@@ -60,10 +59,6 @@
     "typescript": "^3.7.2"
   },
   "devDependencies": {
-    "@types/electron": "^1.6.10",
-    "@types/react": "^16.9.13",
-    "@types/react-dom": "^16.9.4",
-    "@types/sqlite3": "^3.1.5",
     "@electron-forge/cli": "6.0.0-beta.45",
     "@electron-forge/maker-deb": "6.0.0-beta.45",
     "@electron-forge/maker-rpm": "6.0.0-beta.45",
@@ -71,9 +66,14 @@
     "@electron-forge/maker-zip": "6.0.0-beta.45",
     "@electron-forge/plugin-webpack": "6.0.0-beta.45",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
+    "@types/electron": "^1.6.10",
+    "@types/react": "^16.9.13",
+    "@types/react-dom": "^16.9.4",
+    "@types/sqlite3": "^3.1.5",
     "css-loader": "^3.0.0",
     "electron": "^7.1.0",
     "node-loader": "^0.6.0",
+    "react-devtools": "^4.2.1",
     "style-loader": "^0.23.1"
   }
 }
