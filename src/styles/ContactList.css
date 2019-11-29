@@ -1,3 +1,19 @@
 .contactLink {
-  display: block !important
+  display: block !important;
+  font-size: 18px;
+}
+
+.contactList {
+  display: flex;
+  max-height: 700px;
+  overflow-y: auto;
+  flex-direction: column;
+  padding-right: 0rem !important;
+}
+
+.panel-heading {
+  position: sticky;
+  top: 0;
+  color: white !important;
+  background-color: hsl(204, 71%, 53%) !important;
 }

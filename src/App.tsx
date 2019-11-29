@@ -50,19 +50,19 @@ class App extends React.Component<{}, AppProps> {
     }
   
     return (
-      <Container className="App">
+      <div className='App'>
         { loading ? 
-          <div className="loading"></div> :
+          <div className='loading'></div> :
           <Columns>
-          <Columns.Column className="no-scroll" size="one-quarter">
+          <Columns.Column className='contactList' size='one-fifth'>
             <ContactList contacts={contacts!} changeContact={this.selectNewContact} />
           </Columns.Column>
-          <Columns.Column size="three-quarters">
+          <Columns.Column className='contactView' size='four-fifths'>
             { selected ? <ContactView contact={selected} /> : null }
           </Columns.Column>
         </Columns>
         }
-      </Container>
+      </div>
     );
   }
 }

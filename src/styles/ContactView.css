@@ -1,8 +1,28 @@
 .contactView {
-  background:green;
   height: 100%;
-  width: 77%;
   position: absolute;
+  overflow-y: hidden;
   right: 0;
   top: 0;
+}
+
+h2.contact {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.basic-stats {
+  color: white !important;
+  font-size: 20px;
+  background-color: hsl(171, 100%, 41%) !important;
+}
+
+.tbd {
+  background-color: hsl(271, 100%, 71%) !important;
+  color: white !important;
+}
+
+.texts-by-date {
+  background-color: hsl(217, 71%, 53%) !important;
+  color: white !important;
 }

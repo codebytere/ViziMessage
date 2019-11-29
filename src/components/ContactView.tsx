@@ -1,7 +1,9 @@
 import React from 'react';
-import '../styles/ContactView.css';
 import { Tile, Section } from 'react-bulma-components';
 import ScatterGraph from './ScatterGraph';
+import { timeFormat, getDomain } from '../data/utils';
+
+import '../styles/ContactView.css';
 
 class ContactView extends React.Component<{contact: ContactInfo | null}, {}> {
   render() {
@@ -9,34 +11,56 @@ class ContactView extends React.Component<{contact: ContactInfo | null}, {}> {
 
     if (contact) {
       const { firstName, lastName, messages } = contact;
-      const first = Object.keys(messages)[0];
-      const noData = messages[first].total === 0;
+      const first = messages[Object.keys(messages)[0]];
+
+      const { total, fromMe, fromThem } = first;
+
+      let start = 0;
+      let end = 0;
+      let mePercent = 0;
+      let themPercent = 0;
+
+      if (total !== 0) {
+        [start, end] = getDomain(fromMe, fromThem);
+
+        mePercent = Math.floor((fromMe.length/total) * 100);
+        themPercent = Math.floor((fromThem.length/total) * 100);
+      }
+
       return (
-        <Section>
-          <h2>{firstName} {lastName}</h2>
-          { noData ? null :
-            <Tile kind="ancestor">
-              <Tile size={4} vertical={true} kind="parent">
-                <Tile kind="child" className="box">
-                  <p className="title">Text Stats</p>
-                    <p>Total Texts: {messages[first].total}</p>
-                    <p>From Me: {messages[first].fromMe.length}</p>
-                    <p>From Them: {messages[first].fromThem.length}</p>
+        <div>
+          <h2 className='contact'>{firstName} {lastName}</h2>
+          { total === 0 ? 
+            <Section>NO DATA</Section> :
+            <Section>
+              <Tile kind='ancestor'>
+                <Tile size={4} vertical={true} kind='parent'>
+                  <Tile kind='child' className='basic-stats box' color='primary'>
+                    <p className='title'>Basic Stats</p>
+                      <p>
+                        You and {firstName} have exchanged <strong>{total}</strong> total messages
+                        since <strong>{timeFormat(start)}</strong>, with the most recent
+                        on <strong>{timeFormat(end)}</strong>. You have sent
+                        <strong> {fromMe.length} </strong> (<strong>{mePercent}%</strong>!) messages,
+                        and you have recieved <strong>{fromThem.length} </strong>
+                        (<strong>{themPercent}%!</strong>) messages.
+                      </p>
+                  </Tile>
+                  <Tile kind='child' className='tbd box'>
+                    <p className='title'>Two</p>
+                    <p>TODO</p>
+                  </Tile>
                 </Tile>
-                <Tile kind="child" className="box">
-                  <p className="title">Two</p>
-                  <p>TODO</p>
+                <Tile kind='parent'>
+                  <Tile kind='child' className='texts-by-date box'>
+                    <p className='title'>Texts by Date</p>
+                    <ScatterGraph data={first}></ScatterGraph>
+                  </Tile>
                 </Tile>
               </Tile>
-              <Tile kind="parent">
-                <Tile kind="child" className="box">
-                  <p className="title">Texts by Date</p>
-                  <ScatterGraph data={messages[first]}></ScatterGraph>
-                </Tile>
-              </Tile>
-            </Tile>
+            </Section>
           }
-        </Section>
+        </div>
       );
     }
   }

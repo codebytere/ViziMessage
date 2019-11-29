@@ -22,7 +22,8 @@ interface ContactInfo {
 }
 
 interface ScatterChartDataPoint {
-  date: Date;
+  // date represented in milliseconds
+  date: number;
   messageCount: number;
 }
 

@@ -19,7 +19,7 @@ class ContactList extends React.Component<ContactListProps, {}> {
   render() {
     const { contacts } = this.props;
     return (
-      <Panel>
+      <Panel color='info'>
         <Panel.Header>Contacts</Panel.Header>
           {contacts.map((c: ContactInfo) => {
             return (
