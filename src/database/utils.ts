@@ -22,7 +22,6 @@ export function  normalizeNumber (number: string) {
  */
 export function formattedDate (ts: number) {
   const DATE_OFFSET = 978307200;
-  if (ts === 0) return null;
   if (ts.toString().length >= 18) ts = ts / 1000000000;
 
   const unpacked = Math.floor(ts / Math.pow(10, 9));

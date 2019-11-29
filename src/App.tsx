@@ -52,13 +52,12 @@ class App extends React.Component<{}, AppProps> {
     return (
       <Container className="App">
         { loading ? 
-          <div className="loading"></div>
-          :
+          <div className="loading"></div> :
           <Columns>
-          <Columns.Column size="one-quarter">
+          <Columns.Column className="no-scroll" size="one-quarter">
             <ContactList contacts={contacts!} changeContact={this.selectNewContact} />
           </Columns.Column>
-          <Columns.Column>
+          <Columns.Column size="three-quarters">
             { selected ? <ContactView contact={selected} /> : null }
           </Columns.Column>
         </Columns>

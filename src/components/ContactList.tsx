@@ -1,6 +1,8 @@
 import React from "react";
 import '../styles/ContactList.css';
 
+import { Panel } from 'react-bulma-components';
+
 class ContactList extends React.Component<ContactListProps, {}> {
   constructor(props: ContactListProps) {
     super(props);
@@ -17,17 +19,18 @@ class ContactList extends React.Component<ContactListProps, {}> {
   render() {
     const { contacts } = this.props;
     return (
-      <div className="contactList">
-        {contacts.map((c: ContactInfo) => {
-          return (
-            <div className="contact">
-              <button id={c.id.toString()} onClick={this.performChange}>
-                {c.firstName} {c.lastName}
-              </button>
-            </div>
-          )
-        })}
-      </div> 
+      <Panel>
+        <Panel.Header>Contacts</Panel.Header>
+          {contacts.map((c: ContactInfo) => {
+            return (
+              <Panel.Block className="contactLink">
+                <a id={c.id.toString()} onClick={this.performChange}>
+                  {c.firstName} {c.lastName}
+                </a>
+              </Panel.Block>
+            )
+          })}
+      </Panel> 
     );
   }
 }

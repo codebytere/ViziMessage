@@ -2,8 +2,15 @@ declare module 'node-mac-contacts';
 
 interface ContactMessageData {
   total: number;
-  fromMe: any[];
-  fromThem: any[],
+  fromMe: Message[];
+  fromThem: Message[],
+}
+
+interface Message {
+  date: Date;
+  isAudioMessage: boolean;
+  service: string;
+  body: string;
 }
 
 interface ContactInfo {
