@@ -21,6 +21,11 @@ interface ContactInfo {
   messages: Record<string, ContactMessageData>
 }
 
+interface ScatterChartDataPoint {
+  date: Date;
+  messageCount: number;
+}
+
 interface RawData {
   ROWID: number;
   text: string;
