@@ -12,7 +12,7 @@ import { sumTextsForDates, timeFormat, getDomain } from '../data/utils';
 
 import '../styles/ContactView.css';
 
-class ScatterGraph extends React.Component<{data: ContactMessageData}, {}> {
+class ScatterGraph extends React.Component<{data: IContactMessageData}, {}> {
   render() {
     const { fromMe, fromThem } = this.props.data;
     

@@ -3,8 +3,8 @@ import '../styles/ContactList.css';
 
 import { Panel } from 'react-bulma-components';
 
-class ContactList extends React.Component<ContactListProps, {}> {
-  constructor(props: ContactListProps) {
+class ContactList extends React.Component<IContactListProps, {}> {
+  constructor(props: IContactListProps) {
     super(props);
     this.performChange = this.performChange.bind(this);
   }
@@ -21,7 +21,7 @@ class ContactList extends React.Component<ContactListProps, {}> {
     return (
       <Panel color='info'>
         <Panel.Header>Contacts</Panel.Header>
-          {contacts.map((c: ContactInfo) => {
+          {contacts.map((c: IContactInfo) => {
             return (
               <Panel.Block className="contactLink">
                 <a id={c.id.toString()} onClick={this.performChange}>

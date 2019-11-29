@@ -5,7 +5,7 @@ import { timeFormat, getDomain } from '../data/utils';
 
 import '../styles/ContactView.css';
 
-class ContactView extends React.Component<{contact: ContactInfo | null}, {}> {
+class ContactView extends React.Component<{contact: IContactInfo | null}, {}> {
   render() {
     const { contact } = this.props;
 
@@ -41,7 +41,7 @@ class ContactView extends React.Component<{contact: ContactInfo | null}, {}> {
                         You and {firstName} have exchanged <strong>{total}</strong> total messages
                         since <strong>{timeFormat(start)}</strong>, with the most recent
                         on <strong>{timeFormat(end)}</strong>. You have sent
-                        <strong> {fromMe.length} </strong> (<strong>{mePercent}%</strong>!) messages,
+                        <strong> {fromMe.length} </strong> (<strong>{mePercent}%!</strong>) messages,
                         and you have recieved <strong>{fromThem.length} </strong>
                         (<strong>{themPercent}%!</strong>) messages.
                       </p>

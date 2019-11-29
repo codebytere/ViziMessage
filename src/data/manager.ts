@@ -1,9 +1,9 @@
-import { getAllContacts, getAuthStatus } from 'node-mac-contacts';
-import { Database, OPEN_READWRITE } from 'sqlite3';
+import { getAllContacts, getAuthStatus } from "node-mac-contacts";
+import { Database, OPEN_READWRITE } from "sqlite3";
 
-import { cleanData, normalizeNumber } from './utils';
+import { cleanData, normalizeNumber } from "./utils";
 
-let contacts: ContactInfo[] = [];
+let contacts: IContactInfo[] = [];
 let db: any;
 
 /***** HELPER FUNCTIONS *****/
@@ -14,14 +14,14 @@ let db: any;
  * phone number is associated  with only one id, but if you have
  * for example corresponded with them via SMS and iMessage, or
  * in a group chat, they can have multiple.
- * 
+ *
  * @param contact - the basic data for a given Contact
  * @param index - the unique index to associate with a Contact
- * @returns an array containing all unique id(s) for a Contact's phone number.
+ * @returns an array containing all unique id(s) for a Contact"s phone number.
  */
-async function getUniqueIDs (number: string): Promise<string[]> {
+async function getUniqueIDs(phoneNumber: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
-    const query = `SELECT ROWID from chat WHERE chat_identifier = '${number}'`;
+    const query = `SELECT ROWID from chat WHERE chat_identifier = "${phoneNumber}"`;
     db.all(query, (err: string, data: any) => {
       if (err) {
         reject(err);
@@ -31,57 +31,57 @@ async function getUniqueIDs (number: string): Promise<string[]> {
       }
     });
   });
-};
+}
 
 /**
  * Maps each Contact to its associated iMessage information.
- * 
+ *
  * @param contact - the basic data for a given Contact
  * @param index - the unique index to associate with a Contact
  * @returns the updated Contact with iMessage data
  */
-function mapContact (contact: ContactInfo, index: number) {
-  const contactData: ContactInfo = {
-    id: index.toString(),
+function mapContact(contact: IContactInfo, index: number) {
+  const contactData: IContactInfo = {
     firstName: contact.firstName,
+    id: index.toString(),
     lastName: contact.lastName,
-    phoneNumbers: contact.phoneNumbers.map((n: string) => {
-      return normalizeNumber(n)
-    }),
     messages: {},
+    phoneNumbers: contact.phoneNumbers.map((n: string) => {
+      return normalizeNumber(n);
+    }),
   };
 
-  contactData.phoneNumbers.forEach(async (number: string) => {
-    const ids = await getUniqueIDs(number);
-    contactData.messages[number] = await getMessages(ids) as any;
+  contactData.phoneNumbers.forEach(async (phoneNumber: string) => {
+    const ids = await getUniqueIDs(phoneNumber);
+    contactData.messages[phoneNumber] = await getMessages(ids);
   });
 
   return contactData;
-};
+}
 
 /**
  * Returns all iMessages exchanged in conversation with a Contact
- * as specified by that Contact's unique id(s).
- * 
- * @param ids - an array of unique users ids.
- * @returns an Object with data about all messages exchanged with a 
+ * as specified by that Contact"s unique id(s).
+ *
+ * @param ids - an array of unique users ids
+ * @returns an Object with data about all messages exchanged with a Contact
  */
-async function getMessages (ids: string[]) {
+async function getMessages(ids: string[]) {
   return new Promise((resolve, reject) => {
     const query = `
       SELECT ROWID, text, service,
         CASE WHEN LENGTH(date) >= 18
           THEN (date / 1000000000)
         ELSE date END AS adjusted_date,
-      date_read, is_from_me, cache_has_attachments, handle_id 
+      date_read, is_from_me, cache_has_attachments, handle_id
       FROM message AS messageT
-      INNER JOIN chat_message_join AS chatMessageT 
-        ON chatMessageT.chat_id IN (${ids.join(',')})
+      INNER JOIN chat_message_join AS chatMessageT
+        ON chatMessageT.chat_id IN (${ids.join(",")})
         AND messageT.ROWID = chatMessageT.message_id
       ORDER BY adjusted_date
     `;
 
-    db.all(query, (err: string, data: RawData[]) => {
+    db.all(query, (err: string, data: IRawData[]) => {
       if (err) {
         reject(err);
       } else {
@@ -90,55 +90,59 @@ async function getMessages (ids: string[]) {
       }
     });
   });
-};
+}
 
 /***** EXPORTED FUNCTIONS *****/
 
 /**
- * Returns the user's Contacts with mapped iMessage data.
- * 
+ * Returns the user"s Contacts with mapped iMessage data.
+ *
  * @returns the array of all initialized Contacts
  */
 export const getContacts = () => contacts;
 
 /**
  * Fetch a single Contact by first or last name.
- * 
+ *
  * @param name - either the first or last name of a Contact
  * @returns the matching Contact
  */
-export const getContact = (name: string) => {
-  return contacts.filter((c: ContactInfo) => {
+export function getContact(name: string) {
+  return contacts.filter((c: IContactInfo) => {
     return c.firstName === name || c.lastName === name;
-  })
+  });
 }
 
 /**
  * Creates and opens a connection to the iMessage Database, and maps
- * data from the database into each contact from the user's macOS
+ * data from the database into each contact from the user"s macOS
  * contacts store.
  */
 export async function initializeDatabase() {
-  const messageDBPath = '/Users/codebytere/Library/Messages/chat.db';
+  const messageDBPath = "/Users/codebytere/Library/Messages/chat.db";
   db = new Database(messageDBPath, OPEN_READWRITE, (err) => {
-    if (err) { console.error(err); }
+    if (err) {
+      console.error(err);
+    }
   });
 
   const status = getAuthStatus();
-  if (status !== 'Authorized') {
-    throw new Error('Access to contacts was not authorized.');
+  if (status !== "Authorized") {
+    throw new Error("Access to contacts was not authorized.");
   } else {
-    contacts = getAllContacts().map((c: ContactInfo, idx: number) => {
+    contacts = getAllContacts().map((c: IContactInfo, idx: number) => {
       return mapContact(c, idx);
     });
   }
-};
+}
 
 /**
-* Shuts down the connection to the iMessage database
-*/
+ * Shuts down the connection to the iMessage database
+ */
 export function shutdownDatabase() {
   db.close((err: string) => {
-    if (err) { console.error(err); }
+    if (err) {
+      console.log(err);
+    }
   });
 }

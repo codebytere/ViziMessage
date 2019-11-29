@@ -1,15 +1,15 @@
 import { ipcRenderer } from 'electron';
 import React from 'react';
+import { Columns } from 'react-bulma-components';
+
 import ContactList from "./components/ContactList";
 import ContactView from "./components/ContactView";
 
+import 'react-bulma-components/dist/react-bulma-components.min.css';
 import './styles/App.css';
 import './styles/Loader.css';
 
-import 'react-bulma-components/dist/react-bulma-components.min.css';
-import { Container, Columns } from 'react-bulma-components';
-
-class App extends React.Component<{}, AppProps> {
+class App extends React.Component<{}, IAppProps> {
   constructor(props: any) {
     super(props);
     this.state = { loading: true };
@@ -17,7 +17,7 @@ class App extends React.Component<{}, AppProps> {
   }
 
   componentDidMount() {
-    ipcRenderer.invoke('get-contact-data').then((contacts: ContactInfo[]) => {
+    ipcRenderer.invoke('get-contact-data').then((contacts: IContactInfo[]) => {
       this.setState({
         loading: false,
         contacts,
@@ -40,7 +40,7 @@ class App extends React.Component<{}, AppProps> {
 
     let selected = null;
     if (selectedContact !== undefined) { 
-      const filteredContacts: ContactInfo[] = contacts!.filter((c: ContactInfo) => {
+      const filteredContacts: IContactInfo[] = contacts!.filter((c: IContactInfo) => {
         return c.id === selectedContact;
       });  
 

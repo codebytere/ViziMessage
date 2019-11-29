@@ -5,8 +5,7 @@
   "description": "Visualize your iMessage history and interactions.",
   "main": ".webpack/main",
   "scripts": {
-    "start": "electron-forge start",
-    "build": "tsc",
+    "start": "tsc && electron-forge start",
     "package": "electron-forge package",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "make": "electron-forge make",

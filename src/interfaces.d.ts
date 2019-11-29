@@ -1,33 +1,33 @@
-declare module 'node-mac-contacts';
+declare module "node-mac-contacts";
 
-interface ContactMessageData {
+interface IContactMessageData {
   total: number;
   fromMe: Message[];
-  fromThem: Message[],
+  fromThem: Message[];
 }
 
-interface Message {
+interface IMessage {
   date: Date;
   isAudioMessage: boolean;
   service: string;
   body: string;
 }
 
-interface ContactInfo {
+interface IContactInfo {
   id: string;
   firstName: string;
-  lastName: string,
-  phoneNumbers: string[],
-  messages: Record<string, ContactMessageData>
+  lastName: string;
+  phoneNumbers: string[];
+  messages: Record<string, ContactMessageData>;
 }
 
-interface ScatterChartDataPoint {
+interface IDataPoint {
   // date represented in milliseconds
   date: number;
   messageCount: number;
 }
 
-interface RawData {
+interface IRawData {
   ROWID: number;
   text: string;
   service: string;
@@ -41,13 +41,13 @@ interface RawData {
 
 /***** COMPONENT PROP TYPINGS *****/
 
-interface AppProps {
+interface IAppProps {
   loading: boolean;
   contacts?: ContactInfo[];
   selectedContact?: string;
 }
 
-interface ContactListProps {
+interface IContactListProps {
   contacts: ContactInfo[];
-  changeContact: Function;
+  changeContact: (id: string) => void;
 }
