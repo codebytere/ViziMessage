@@ -67,7 +67,11 @@ export function cleanData(data: IRawData[]) {
 }
 
 /**
- * TODO(codebytere): comment this
+ * Returns the total
+ *
+ * @param messages - an array of message objects
+ * @returns an array of graph point objects, with each object containing a date and
+ * number of messages sent on that date
  */
 export function sumTextsForDates(messages: IMessage[]) {
   const formatted: IDataPoint[] = [];

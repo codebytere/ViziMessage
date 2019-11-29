@@ -1,4 +1,6 @@
+import { app, dialog, shell } from "electron";
 import { getAllContacts, getAuthStatus } from "node-mac-contacts";
+import { homedir } from "os";
 import { Database, OPEN_READWRITE } from "sqlite3";
 
 import { cleanData, normalizeNumber } from "./utils";
@@ -92,6 +94,25 @@ async function getMessages(ids: string[]) {
   });
 }
 
+/**
+ * Opens up the connection to the iMessage database. If a
+ * connection cannot be established, an error dialog is shown
+ * and the app quits.
+ */
+function openDatabaseConnection() {
+  // TODO(codebytere): allow users to specify custom db path.
+  const messageDBPath = `${homedir()}/Library/Messages/chat.db`;
+  db = new Database(messageDBPath, OPEN_READWRITE, (err) => {
+    if (err) {
+      dialog.showErrorBox(
+        "Could not connect to database",
+        `Unable to open database at: ${messageDBPath}`,
+      );
+      app.quit();
+    }
+  });
+}
+
 /***** EXPORTED FUNCTIONS *****/
 
 /**
@@ -102,34 +123,28 @@ async function getMessages(ids: string[]) {
 export const getContacts = () => contacts;
 
 /**
- * Fetch a single Contact by first or last name.
- *
- * @param name - either the first or last name of a Contact
- * @returns the matching Contact
- */
-export function getContact(name: string) {
-  return contacts.filter((c: IContactInfo) => {
-    return c.firstName === name || c.lastName === name;
-  });
-}
-
-/**
  * Creates and opens a connection to the iMessage Database, and maps
  * data from the database into each contact from the user"s macOS
  * contacts store.
  */
-export async function initializeDatabase() {
-  const messageDBPath = "/Users/codebytere/Library/Messages/chat.db";
-  db = new Database(messageDBPath, OPEN_READWRITE, (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
-
+export async function initializeMessageData() {
   const status = getAuthStatus();
   if (status !== "Authorized") {
-    throw new Error("Access to contacts was not authorized.");
+    dialog.showMessageBox({
+      buttons: ["Open System Preferences", "Cancel"],
+      defaultId: 0,
+      detail: "In order to use this application you need to give it Full Disk Access, since the iMessage database requires it. Open System Preferences?",
+      message: "Access to iMessage Database was not authorized.",
+    }).then(async (res) => {
+      if (res.response === 1) {
+        await shell.openExternal("x-apple.systempreferences:com.apple.preference.security");
+      }
+
+      // Quit the app regardless of user choice.
+      app.quit();
+    });
   } else {
+    openDatabaseConnection();
     contacts = getAllContacts().map((c: IContactInfo, idx: number) => {
       return mapContact(c, idx);
     });
