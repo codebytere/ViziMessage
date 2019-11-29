@@ -25,3 +25,16 @@ interface RawData {
   is_audio_message: 0 | 1;
   handle_id: number;
 }
+
+/***** COMPONENT PROP TYPINGS *****/
+
+interface AppProps {
+  loading: boolean;
+  contacts?: ContactInfo[];
+  selectedContact?: string;
+}
+
+interface ContactListProps {
+  contacts: ContactInfo[];
+  changeContact: Function;
+}

@@ -1,10 +1,5 @@
 import React from "react";
-import './ContactList.css';
-
-type ContactListProps = {
-  contacts: ContactInfo[],
-  changeContact: Function,
-}
+import '../styles/ContactList.css';
 
 class ContactList extends React.Component<ContactListProps, {}> {
   constructor(props: ContactListProps) {

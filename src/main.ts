@@ -8,6 +8,10 @@ let win: Electron.BrowserWindow | null;
 
 const createWindow = () => {
   win = new BrowserWindow({
+    frame: false,
+    width: 1000,
+    height: 700,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -18,7 +22,6 @@ const createWindow = () => {
   BrowserWindow.addDevToolsExtension(extPath);
 
   win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-  win.webContents.openDevTools();
 
   ipcMain.handle('get-contact-data', async (event) => {
     return getContacts();

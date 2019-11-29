@@ -1,10 +1,12 @@
 import React from 'react';
-import './ContactView.css';
+import '../styles/ContactView.css';
 
 class ContactView extends React.Component<{contact: ContactInfo | null}, {}> {
   render() {
-    if (this.props.contact) {
-      const { firstName, lastName, messages } = this.props.contact;
+    const { contact } = this.props;
+
+    if (contact) {
+      const { firstName, lastName, messages } = contact;
       const first = Object.keys(messages)[0];
       return (
         <div>

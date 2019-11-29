@@ -3,13 +3,13 @@ import React from 'react';
 import ContactList from "./components/ContactList";
 import ContactView from "./components/ContactView";
 
-import './App.css';
+import './styles/App.css';
+import './styles/Loader.css';
 
-class App extends React.Component<{}, {
-  loading: boolean,
-  contacts?: any,
-  selectedContact?: string
-}> {
+import 'react-bulma-components/dist/react-bulma-components.min.css';
+import { Container, Columns } from 'react-bulma-components';
+
+class App extends React.Component<{}, AppProps> {
   constructor(props: any) {
     super(props);
     this.state = { loading: true };
@@ -40,7 +40,7 @@ class App extends React.Component<{}, {
 
     let selected = null;
     if (selectedContact !== undefined) { 
-      const filteredContacts: ContactInfo[] = contacts.filter((c: ContactInfo) => {
+      const filteredContacts: ContactInfo[] = contacts!.filter((c: ContactInfo) => {
         return c.id === selectedContact;
       });  
 
@@ -50,10 +50,20 @@ class App extends React.Component<{}, {
     }
   
     return (
-      <div className="App">
-        { loading ? 'Loading' : <ContactList contacts={contacts} changeContact={this.selectNewContact} />}
-        { selected ? <ContactView contact={selected} /> : null }
-      </div>
+      <Container className="App">
+        { loading ? 
+          <div className="loading"></div>
+          :
+          <Columns>
+          <Columns.Column size="one-quarter">
+            <ContactList contacts={contacts!} changeContact={this.selectNewContact} />
+          </Columns.Column>
+          <Columns.Column>
+            { selected ? <ContactView contact={selected} /> : null }
+          </Columns.Column>
+        </Columns>
+        }
+      </Container>
     );
   }
 }
