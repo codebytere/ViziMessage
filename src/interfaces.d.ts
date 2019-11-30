@@ -1,4 +1,4 @@
-declare module "node-mac-contacts";
+declare module 'node-mac-contacts';
 
 interface IContactMessageData {
   total: number;
@@ -39,11 +39,11 @@ interface IRawData {
   handle_id: number;
 }
 
-/***** COMPONENT PROP TYPINGS *****/
+/* COMPONENT PROP TYPINGS */
 
 interface IAppProps {
   loading: boolean;
-  contacts?: ContactInfo[];
+  contacts: ContactInfo[];
   selectedContact?: string;
 }
 

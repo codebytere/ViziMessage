@@ -1,5 +1,5 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import { getContacts, initializeMessageData, shutdownDatabase } from "./data/manager";
+import { app, BrowserWindow, ipcMain } from 'electron';
+import { getContacts, initializeMessageData, shutdownDatabase } from './data/manager';
 
 // Webpack declares this, so we just need to tell TypeScript it'll be real
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
@@ -19,23 +19,23 @@ const createWindow = () => {
 
   win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  ipcMain.handle("get-contact-data", async (event) => {
+  ipcMain.handle('get-contact-data', async (event) => {
     return getContacts();
   });
 
-  win.on("closed", () => { win = null; });
+  win.on('closed', () => { win = null; });
 };
 
-app.on("ready", () => {
+app.on('ready', () => {
   initializeMessageData();
   createWindow();
 });
 
-app.on("window-all-closed", () => {
+app.on('window-all-closed', () => {
   shutdownDatabase();
-  if (process.platform !== "darwin") { app.quit(); }
+  if (process.platform !== 'darwin') { app.quit(); }
 });
 
-app.on("activate", () => {
+app.on('activate', () => {
   if (win === null) { createWindow(); }
 });

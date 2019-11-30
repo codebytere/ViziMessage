@@ -1,5 +1,5 @@
-import moment from "moment";
-import { DAY } from "../constants";
+import moment from 'moment';
+import { DAY } from '../constants';
 
 /**
  * Returns a normalized phone number in E.164 format.
@@ -13,7 +13,7 @@ import { DAY } from "../constants";
  * @returns the normalized number in E.164 format.
  */
 export function normalizeNumber(rawNumber: string) {
-  const stripped = rawNumber.replace(/\D/g, "");
+  const stripped = rawNumber.replace(/\D/g, '');
   return stripped.length === 10 ? `+1${stripped}` : `+${stripped}`;
 }
 
@@ -67,8 +67,8 @@ export function cleanData(data: IRawData[]) {
 }
 
 /**
- * Transforms a set of message objects into a set of plot 
- * points for visualizing how many messages were sent on a 
+ * Transforms a set of message objects into a set of plot
+ * points for visualizing how many messages were sent on a
  * given date over the course of message history with a given
  * Contact.
  *
@@ -80,7 +80,7 @@ export function sumTextsForDates(messages: IMessage[]) {
   const formatted: IDataPoint[] = [];
 
   // Used to set the iteration range so we can more accurately
-  // step through message history of Contacts with wildly 
+  // step through message history of Contacts with wildly
   // disparate messaging timespans.
   const [first, last] = [
     new Date(messages[0].date).getTime(),
@@ -113,7 +113,7 @@ export function sumTextsForDates(messages: IMessage[]) {
  * @returns a string with time formatted as YYYY-MM-DD.
  */
 export function timeFormat(time: number | string | Date) {
- return moment(time).format("MM/DD/YYYY");
+ return moment(time).format('MM/DD/YYYY');
 }
 
 /**

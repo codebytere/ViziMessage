@@ -7,7 +7,7 @@
   "scripts": {
     "start": "tsc && electron-forge start",
     "package": "electron-forge package",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "rebuild": "electron-rebuild -f -w sqlite3"
@@ -81,6 +81,7 @@
     "react-devtools": "^4.2.1",
     "style-loader": "^0.23.1",
     "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0"
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.1.0"
   }
 }

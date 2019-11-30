@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import '../styles/ContactList.css';
 
 import { Panel } from 'react-bulma-components';
@@ -9,29 +9,32 @@ class ContactList extends React.Component<IContactListProps, {}> {
     this.performChange = this.performChange.bind(this);
   }
 
-  performChange(e: any) {
+  public render() {
+    return (
+      <Panel color='info'>
+        <Panel.Header>Contacts</Panel.Header>
+        {this.props.contacts.map((c: IContactInfo) => this.renderContact(c))}
+      </Panel>
+    );
+  }
+
+  /* PRIVATE INSTANCE METHODS */
+
+  private renderContact(c: IContactInfo) {
+    return (
+      <Panel.Block className='contactLink'>
+        <a id={c.id.toString()} onClick={this.performChange}>
+          {c.firstName} {c.lastName}
+        </a>
+      </Panel.Block>
+    );
+  }
+
+  private performChange(e: any) {
     if (e.target) {
       const id = e.target.id;
       this.props.changeContact(id);
     }
-  }
-
-  render() {
-    const { contacts } = this.props;
-    return (
-      <Panel color='info'>
-        <Panel.Header>Contacts</Panel.Header>
-          {contacts.map((c: IContactInfo) => {
-            return (
-              <Panel.Block className="contactLink">
-                <a id={c.id.toString()} onClick={this.performChange}>
-                  {c.firstName} {c.lastName}
-                </a>
-              </Panel.Block>
-            )
-          })}
-      </Panel> 
-    );
   }
 }
 

@@ -1,9 +1,9 @@
-import { app, dialog, shell } from "electron";
-import { getAllContacts, getAuthStatus } from "node-mac-contacts";
-import { homedir } from "os";
-import { Database, OPEN_READWRITE } from "sqlite3";
+import { app, dialog, shell } from 'electron';
+import { getAllContacts, getAuthStatus } from 'node-mac-contacts';
+import { homedir } from 'os';
+import { Database, OPEN_READWRITE } from 'sqlite3';
 
-import { cleanData, normalizeNumber } from "./utils";
+import { cleanData, normalizeNumber } from './utils';
 
 let contacts: IContactInfo[] = [];
 let db: Database;
@@ -19,11 +19,11 @@ let db: Database;
  *
  * @param contact - the basic data for a given Contact.
  * @param index - the unique index to associate with a Contact.
- * @returns an array containing all unique id(s) for a Contact"s phone number.
+ * @returns an array containing all unique id(s) for a Contact's phone number.
  */
 async function getUniqueIDs(phoneNumber: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
-    const query = `SELECT ROWID from chat WHERE chat_identifier = "${phoneNumber}"`;
+    const query = `SELECT ROWID from chat WHERE chat_identifier = '${phoneNumber}'`;
     db.all(query, (err: string, data: any) => {
       if (err) {
         reject(err);
@@ -78,7 +78,7 @@ async function getMessages(ids: string[]) {
       date_read, is_from_me, cache_has_attachments, handle_id
       FROM message AS messageT
       INNER JOIN chat_message_join AS chatMessageT
-        ON chatMessageT.chat_id IN (${ids.join(",")})
+        ON chatMessageT.chat_id IN (${ids.join(',')})
         AND messageT.ROWID = chatMessageT.message_id
       ORDER BY adjusted_date
     `;
@@ -105,7 +105,7 @@ function openDatabaseConnection() {
   db = new Database(messageDBPath, OPEN_READWRITE, (err) => {
     if (err) {
       dialog.showErrorBox(
-        "Could not connect to database",
+        'Could not connect to database',
         `Unable to open database at: ${messageDBPath}`,
       );
       app.quit();
@@ -129,15 +129,15 @@ export const getContacts = () => contacts;
  */
 export async function initializeMessageData() {
   const status = getAuthStatus();
-  if (status !== "Authorized") {
+  if (status !== 'Authorized') {
     dialog.showMessageBox({
-      buttons: ["Open System Preferences", "Cancel"],
+      buttons: ['Open System Preferences', 'Cancel'],
       defaultId: 0,
-      detail: "In order to use this application you need to give it Full Disk Access, since the iMessage database requires it. Open System Preferences?",
-      message: "Access to iMessage Database was not authorized.",
+      detail: 'In order to use this application you need to give it Full Disk Access, since the iMessage database requires it. Open System Preferences?',
+      message: 'Access to iMessage Database was not authorized.',
     }).then(async (res) => {
       if (res.response === 1) {
-        await shell.openExternal("x-apple.systempreferences:com.apple.preference.security");
+        await shell.openExternal('x-apple.systempreferences:com.apple.preference.security');
       }
 
       // Quit the app regardless of user choice - there's nothing else we can do here.
