@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   ScatterChart,
   Scatter,
@@ -14,9 +14,11 @@ import '../styles/ContactView.css';
 
 class ScatterGraph extends React.Component<{data: IContactMessageData}, {}> {
   render() {
+    console.log('Re-rendering');
     const { fromMe, fromThem } = this.props.data;
     
     // Transform data into an array mapping [date => number of texts sent on date]
+    // TODO(codebytere): memoize these functions to speed up re-renders
     const transformedFromMe = sumTextsForDates(fromMe);
     const transformedFromThem = sumTextsForDates(fromThem);
 

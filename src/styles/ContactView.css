@@ -7,8 +7,9 @@
 }
 
 h2.contact {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .basic-stats {
@@ -17,12 +18,22 @@ h2.contact {
   background-color: hsl(171, 100%, 41%) !important;
 }
 
-.tbd {
+.percentages {
   background-color: hsl(271, 100%, 71%) !important;
+  font-size: 20px;
   color: white !important;
 }
 
 .texts-by-date {
   background-color: hsl(217, 71%, 53%) !important;
   color: white !important;
+}
+
+.no-data {
+  background-color: hsl(348, 100%, 61%) !important;
+  color: white !important;
+  max-width: 60%;
+  margin: auto;
+  font-size: 32px;
+  font-weight: bolder;
 }

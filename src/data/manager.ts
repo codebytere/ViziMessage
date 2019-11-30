@@ -6,19 +6,19 @@ import { Database, OPEN_READWRITE } from "sqlite3";
 import { cleanData, normalizeNumber } from "./utils";
 
 let contacts: IContactInfo[] = [];
-let db: any;
+let db: Database;
 
 /***** HELPER FUNCTIONS *****/
 
 /**
- * Fetches the unique id(s) from the iMessage database corresponding
+ * Fetches the unique id(s) from the message database corresponding
  * to a given phone number belonging to a Contact. Typically, a
  * phone number is associated  with only one id, but if you have
  * for example corresponded with them via SMS and iMessage, or
  * in a group chat, they can have multiple.
  *
- * @param contact - the basic data for a given Contact
- * @param index - the unique index to associate with a Contact
+ * @param contact - the basic data for a given Contact.
+ * @param index - the unique index to associate with a Contact.
  * @returns an array containing all unique id(s) for a Contact"s phone number.
  */
 async function getUniqueIDs(phoneNumber: string): Promise<string[]> {
@@ -36,11 +36,11 @@ async function getUniqueIDs(phoneNumber: string): Promise<string[]> {
 }
 
 /**
- * Maps each Contact to its associated iMessage information.
+ * Maps each Contact to its associated message information.
  *
- * @param contact - the basic data for a given Contact
- * @param index - the unique index to associate with a Contact
- * @returns the updated Contact with iMessage data
+ * @param contact - the basic data for a given Contact.
+ * @param index - the unique index to associate with a Contact.
+ * @returns the updated Contact with message data.
  */
 function mapContact(contact: IContactInfo, index: number) {
   const contactData: IContactInfo = {
@@ -62,11 +62,11 @@ function mapContact(contact: IContactInfo, index: number) {
 }
 
 /**
- * Returns all iMessages exchanged in conversation with a Contact
- * as specified by that Contact"s unique id(s).
+ * Returns all messages exchanged in conversation with a Contact
+ * as specified by that Contact's unique id(s).
  *
- * @param ids - an array of unique users ids
- * @returns an Object with data about all messages exchanged with a Contact
+ * @param ids - an array of unique users ids.
+ * @returns an Object with data about all messages exchanged with a Contact.
  */
 async function getMessages(ids: string[]) {
   return new Promise((resolve, reject) => {
@@ -83,7 +83,7 @@ async function getMessages(ids: string[]) {
       ORDER BY adjusted_date
     `;
 
-    db.all(query, (err: string, data: IRawData[]) => {
+    db.all(query, (err, data: IRawData[]) => {
       if (err) {
         reject(err);
       } else {
@@ -95,7 +95,7 @@ async function getMessages(ids: string[]) {
 }
 
 /**
- * Opens up the connection to the iMessage database. If a
+ * Opens up the connection to the message database. If a
  * connection cannot be established, an error dialog is shown
  * and the app quits.
  */
@@ -116,15 +116,15 @@ function openDatabaseConnection() {
 /***** EXPORTED FUNCTIONS *****/
 
 /**
- * Returns the user"s Contacts with mapped iMessage data.
+ * Returns the user's Contacts with mapped message data.
  *
- * @returns the array of all initialized Contacts
+ * @returns the array of all initialized Contacts.
  */
 export const getContacts = () => contacts;
 
 /**
- * Creates and opens a connection to the iMessage Database, and maps
- * data from the database into each contact from the user"s macOS
+ * Creates and opens a connection to the message Database, and maps
+ * data from the database into each contact from the user's macOS
  * contacts store.
  */
 export async function initializeMessageData() {
@@ -140,7 +140,7 @@ export async function initializeMessageData() {
         await shell.openExternal("x-apple.systempreferences:com.apple.preference.security");
       }
 
-      // Quit the app regardless of user choice.
+      // Quit the app regardless of user choice - there's nothing else we can do here.
       app.quit();
     });
   } else {
@@ -152,12 +152,11 @@ export async function initializeMessageData() {
 }
 
 /**
- * Shuts down the connection to the iMessage database
+ * Shuts down the connection to the message database
  */
 export function shutdownDatabase() {
-  db.close((err: string) => {
-    if (err) {
-      console.log(err);
-    }
-  });
+  // We don't really care if the database can be
+  // closed successfully or not, since this will
+  // only ever be called when we're already quitting.
+  db.close();
 }

@@ -9,7 +9,7 @@ import { DAY } from "../constants";
  * (415) 555-2671 => +14155552671
  * 44 020 7183 8750 = +4402071838750
  *
- * @param number - the raw phone number in a variety of potential formats
+ * @param number - the raw phone number in a variety of potential formats.
  * @returns the normalized number in E.164 format.
  */
 export function normalizeNumber(rawNumber: string) {
@@ -20,7 +20,7 @@ export function normalizeNumber(rawNumber: string) {
 /**
  * Takes a timestamp and normalizes it into a Date object.
  *
- * @param ts - a timestamp as stored per-message in the iMessage database
+ * @param ts - a timestamp as stored per-message in the iMessage database.
  * @returns a Date object created from the timestamp.
  */
 export function formattedDate(ts: number) {
@@ -36,7 +36,7 @@ export function formattedDate(ts: number) {
 /**
  * Cleans up raw iMessage data dump to make it more readable and organized.
  *
- * @param data - the raw phone number in a variety of potential formats
+ * @param data - the raw phone number in a variety of potential formats.
  * @returns an object containing messages from them, myself, and the total.
  */
 export function cleanData(data: IRawData[]) {
@@ -67,14 +67,21 @@ export function cleanData(data: IRawData[]) {
 }
 
 /**
- * Returns the total
+ * Transforms a set of message objects into a set of plot 
+ * points for visualizing how many messages were sent on a 
+ * given date over the course of message history with a given
+ * Contact.
  *
- * @param messages - an array of message objects
- * @returns an array of graph point objects, with each object containing a date and
- * number of messages sent on that date
+ * @param messages - an array of message objects.
+ * @returns an array of graph point objects, with each object
+ * containing a date and number of messages sent on that date.
  */
 export function sumTextsForDates(messages: IMessage[]) {
   const formatted: IDataPoint[] = [];
+
+  // Used to set the iteration range so we can more accurately
+  // step through message history of Contacts with wildly 
+  // disparate messaging timespans.
   const [first, last] = [
     new Date(messages[0].date).getTime(),
     new Date(messages[messages.length - 1].date).getTime(),
@@ -102,20 +109,23 @@ export function sumTextsForDates(messages: IMessage[]) {
 /**
  * Formats a date more human-readably.
  *
- * @param time - a date represented either as a Date or in milliseconds
- * @returns a string with time formatted as "YYYY-MM-DD"
+ * @param time - a date represented either as a Date or in milliseconds.
+ * @returns a string with time formatted as YYYY-MM-DD.
  */
 export function timeFormat(time: number | string | Date) {
  return moment(time).format("MM/DD/YYYY");
 }
 
 /**
- * Fetches the start and end dates for the x-axis, based on the first and last
- * texts sent between myself and a given Contact.
+ * Fetches the start and end dates for the x-axis, based on the
+ * first and last texts sent between myself and a given Contact.
  *
- * @param fromMe - the array of message objects sent from me to the Contact
- * @param fromThem - the array of message objects sent from the Contact to me
- * @returns an array containing the start/end times for the graph x-axis in milliseconds
+ * @param fromMe - the array of message objects sent from me to
+ * the Contact.
+ * @param fromThem - the array of message objects sent from the
+ * Contact to me.
+ * @returns an array containing the start/end times for the graph
+ * x-axis in milliseconds.
  */
 export function getDomain(fromMe: IMessage[], fromThem: IMessage[]) {
   const meStart = new Date(fromMe[0].date).getTime();

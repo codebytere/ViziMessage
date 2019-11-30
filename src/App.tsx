@@ -52,7 +52,7 @@ class App extends React.Component<{}, IAppProps> {
     return (
       <div className='App'>
         { loading ? 
-          <div className='loading'></div> :
+          <div className='loading'></div>:
           <Columns>
           <Columns.Column className='contactList' size='one-fifth'>
             <ContactList contacts={contacts!} changeContact={this.selectNewContact} />

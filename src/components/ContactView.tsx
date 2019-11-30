@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tile, Section } from 'react-bulma-components';
+import { Box, Tile, Section } from 'react-bulma-components';
 import ScatterGraph from './ScatterGraph';
 import { timeFormat, getDomain } from '../data/utils';
 
@@ -31,7 +31,11 @@ class ContactView extends React.Component<{contact: IContactInfo | null}, {}> {
         <div>
           <h2 className='contact'>{firstName} {lastName}</h2>
           { total === 0 ? 
-            <Section>NO DATA</Section> :
+            <Section>
+              <Box className="no-data">
+                <p>NO DATA</p>
+              </Box>
+            </Section> :
             <Section>
               <Tile kind='ancestor'>
                 <Tile size={4} vertical={true} kind='parent'>
@@ -40,15 +44,17 @@ class ContactView extends React.Component<{contact: IContactInfo | null}, {}> {
                       <p>
                         You and {firstName} have exchanged <strong>{total}</strong> total messages
                         since <strong>{timeFormat(start)}</strong>, with the most recent
-                        on <strong>{timeFormat(end)}</strong>. You have sent
-                        <strong> {fromMe.length} </strong> (<strong>{mePercent}%!</strong>) messages,
-                        and you have recieved <strong>{fromThem.length} </strong>
-                        (<strong>{themPercent}%!</strong>) messages.
+                        on <strong>{timeFormat(end)}</strong>.
                       </p>
                   </Tile>
-                  <Tile kind='child' className='tbd box'>
-                    <p className='title'>Two</p>
-                    <p>TODO</p>
+                  <Tile kind='child' className='percentages box'>
+                    <p className='title'>Percentages</p>
+                    <p>
+                      You have sent
+                      <strong> {fromMe.length} </strong> (<strong>{mePercent}%!</strong>) messages,
+                      and you have recieved <strong>{fromThem.length} </strong>
+                      (<strong>{themPercent}%!</strong>) messages.
+                    </p>
                   </Tile>
                 </Tile>
                 <Tile kind='parent'>

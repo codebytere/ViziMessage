@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { homedir } from "os";
-import * as path from "path";
-import { getContacts, initializeDatabase, shutdownDatabase } from "./data/manager";
+import { getContacts, initializeMessageData, shutdownDatabase } from "./data/manager";
+
+// Webpack declares this, so we just need to tell TypeScript it'll be real
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 let win: Electron.BrowserWindow | null;
@@ -17,10 +17,6 @@ const createWindow = () => {
     width: 1200,
   });
 
-  const ext = "/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0";
-  const extPath = path.join(homedir(), ext);
-  BrowserWindow.addDevToolsExtension(extPath);
-
   win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   ipcMain.handle("get-contact-data", async (event) => {
@@ -31,7 +27,7 @@ const createWindow = () => {
 };
 
 app.on("ready", () => {
-  initializeDatabase();
+  initializeMessageData();
   createWindow();
 });
 
