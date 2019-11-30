@@ -23,8 +23,8 @@ class ContactView extends React.Component<{contact: IContactInfo | null}, {}> {
       if (total !== 0) {
         [start, end] = getDomain(fromMe, fromThem);
 
-        mePercent = Math.floor((fromMe.length/total) * 100);
-        themPercent = Math.floor((fromThem.length/total) * 100);
+        mePercent = Math.round((fromMe.length/total) * 100);
+        themPercent = Math.round((fromThem.length/total) * 100);
       }
 
       return (
