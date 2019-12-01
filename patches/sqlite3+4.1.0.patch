@@ -1,0 +1,16 @@
+diff --git a/node_modules/sqlite3/lib/sqlite3.js b/node_modules/sqlite3/lib/sqlite3.js
+index c8e3e8c..8754da8 100644
+--- a/node_modules/sqlite3/lib/sqlite3.js
++++ b/node_modules/sqlite3/lib/sqlite3.js
+@@ -1,7 +1,8 @@
+-var binary = require('node-pre-gyp');
++// var binary = require('node-pre-gyp');
+ var path = require('path');
+-var binding_path = binary.find(path.resolve(path.join(__dirname,'../package.json')));
+-var binding = require(binding_path);
++// var binding_path = binary.find(path.resolve(path.join(__dirname,'../package.json')));
++// var binding = require(binding_path);
++var binding = require('bindings')('node_sqlite3.node');
+ var sqlite3 = module.exports = exports = binding;
+ var EventEmitter = require('events').EventEmitter;
+

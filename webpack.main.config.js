@@ -1,10 +1,5 @@
 const fs = require('fs');
 
-const nodeModules = {};
-fs.readdirSync('node_modules')
-.filter(x => ['.bin'].indexOf(x) === -1)
-.forEach(mod => { nodeModules[mod] = 'commonjs ' + mod; });
-
 module.exports = {
   /**
    * This is the main entry point for your application, it's the first file
@@ -15,8 +10,7 @@ module.exports = {
   module: {
     rules: require('./webpack.rules'),
   },
-  externals: nodeModules,
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css']
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
   },
 };
