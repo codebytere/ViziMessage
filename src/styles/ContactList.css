@@ -17,3 +17,24 @@
   color: white !important;
   background-color: hsl(204, 71%, 53%) !important;
 }
+
+.contact-search {
+  position: sticky;
+  top: 47px;
+  background-color: white !important;
+}
+
+.search-box {
+  font-size: 1.25rem;
+}
+
+.input {
+  box-shadow: inset 0 1px 2px rgba(10,10,10,.1);
+  width: 100%;
+  max-width: 100%;
+}
+
+.input:focus {
+  border-color: #3273dc;
+  box-shadow: 0 0 0 0.125em rgba(50,115,220,.25);
+}

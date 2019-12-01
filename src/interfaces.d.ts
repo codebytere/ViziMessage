@@ -2,8 +2,8 @@ declare module 'node-mac-contacts';
 
 interface IContactMessageData {
   total: number;
-  fromMe: Message[];
-  fromThem: Message[];
+  fromMe: IMessage[];
+  fromThem: IMessage[];
 }
 
 interface IMessage {
@@ -18,7 +18,7 @@ interface IContactInfo {
   firstName: string;
   lastName: string;
   phoneNumbers: string[];
-  messages: Record<string, ContactMessageData>;
+  messages: Record<string, IContactMessageData>;
 }
 
 interface IDataPoint {
@@ -43,11 +43,11 @@ interface IRawData {
 
 interface IAppProps {
   loading: boolean;
-  contacts: ContactInfo[];
+  contacts: IContactInfo[];
   selectedContact?: string;
 }
 
 interface IContactListProps {
-  contacts: ContactInfo[];
+  contacts: IContactInfo[];
   changeContact: (id: string) => void;
 }

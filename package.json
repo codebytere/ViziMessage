@@ -1,6 +1,6 @@
 {
   "name": "vizimessage",
-  "productName": "vizimessage",
+  "productName": "ViziMessage",
   "version": "1.0.0",
   "description": "Visualize your iMessage history and interactions.",
   "main": ".webpack/main",

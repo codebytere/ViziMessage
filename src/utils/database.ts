@@ -68,7 +68,7 @@ function mapContact(contact: IContactInfo, index: number) {
  * @param ids - an array of unique users ids.
  * @returns an Object with data about all messages exchanged with a Contact.
  */
-async function getMessages(ids: string[]) {
+async function getMessages(ids: string[]): Promise<IContactMessageData> {
   return new Promise((resolve, reject) => {
     const query = `
       SELECT ROWID, text, service,

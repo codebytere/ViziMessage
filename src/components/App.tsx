@@ -32,7 +32,7 @@ class App extends React.Component<{}, IAppProps> {
 
     let selected = null;
     if (selectedContact !== undefined) {
-      const filteredContacts: IContactInfo[] = contacts.filter((c: IContactInfo) => {
+      const filteredContacts = contacts.filter((c: IContactInfo) => {
         return c.id === selectedContact;
       });
 
@@ -43,7 +43,7 @@ class App extends React.Component<{}, IAppProps> {
 
     return (
       <div className='App'>
-        {loading ? this.renderLoading() : this.renderApp(contacts as IContactInfo[], selected)}
+        {loading ? this.renderLoading() : this.renderApp(contacts, selected)}
       </div>
     );
   }
