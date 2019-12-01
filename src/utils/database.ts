@@ -126,7 +126,7 @@ export const getContacts = () => contacts;
  */
 export async function initializeMessageData() {
   const status = getAuthStatus();
-  if (status !== 'Authorized') {
+  if (status === 'Denied') {
     await runContactsFailureDialog();
     app.quit();
   } else {
