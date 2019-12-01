@@ -3,7 +3,7 @@ import { getAllContacts, getAuthStatus } from 'node-mac-contacts';
 import { homedir } from 'os';
 import { Database, OPEN_READWRITE } from 'sqlite3';
 
-import { cleanData, normalizeNumber } from './utils';
+import { cleanData, normalizeNumber } from './helpers';
 
 let contacts: IContactInfo[] = [];
 let db: Database;

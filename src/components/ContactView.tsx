@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Section, Tile } from 'react-bulma-components';
-import { getDomain, timeFormat } from '../data/utils';
+import { getDomain, timeFormat } from '../utils/graph';
 import ScatterGraph from './ScatterGraph';
 
 import '../styles/ContactView.css';

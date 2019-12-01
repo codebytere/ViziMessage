@@ -1,5 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { getContacts, initializeMessageData, shutdownDatabase } from './data/manager';
+import { getContacts, initializeMessageData, shutdownDatabase } from './utils/database';
+import { setupDevTools } from './utils/devtools';
+import { isDevMode } from './utils/helpers';
 
 // Webpack declares this, so we just need to tell TypeScript it'll be real
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
@@ -9,6 +11,7 @@ let win: Electron.BrowserWindow | null;
 const createWindow = () => {
   win = new BrowserWindow({
     frame: false,
+    fullscreenable: false,
     height: 700,
     resizable: false,
     webPreferences: {
@@ -27,6 +30,10 @@ const createWindow = () => {
 };
 
 app.on('ready', () => {
+  if (isDevMode()) {
+    setupDevTools();
+  }
+
   initializeMessageData();
   createWindow();
 });

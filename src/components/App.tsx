@@ -2,13 +2,13 @@ import { ipcRenderer } from 'electron';
 import React from 'react';
 import { Columns } from 'react-bulma-components';
 
-import ContactList from './components/ContactList';
-import ContactView from './components/ContactView';
+import ContactList from './ContactList';
+import ContactView from './ContactView';
 
 // tslint:disable-next-line:no-submodule-imports
 import 'react-bulma-components/dist/react-bulma-components.min.css';
-import './styles/App.css';
-import './styles/Loader.css';
+import '../styles/App.css';
+import '../styles/Loader.css';
 
 class App extends React.Component<{}, IAppProps> {
   constructor(props: any) {

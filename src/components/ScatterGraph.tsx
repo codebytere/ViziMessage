@@ -1,5 +1,5 @@
-import { getDomain, sumTextsForDates, timeFormat } from '../data/utils';
 import '../styles/ContactView.css';
+import { getDomain, sumTextsForDates, timeFormat } from '../utils/graph';
 
 import React, { memo } from 'react';
 import { CartesianGrid, Legend, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from 'recharts';
