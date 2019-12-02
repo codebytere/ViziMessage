@@ -18,6 +18,7 @@ interface IContactInfo {
   firstName: string;
   lastName: string;
   phoneNumbers: string[];
+  emailAddresses: string[];
   messages: Record<string, IContactMessageData>;
 }
 

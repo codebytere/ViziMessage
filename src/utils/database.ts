@@ -44,6 +44,7 @@ async function getUniqueIDs(phoneNumber: string): Promise<string[]> {
  */
 function mapContact(contact: IContactInfo, index: number) {
   const contactData: IContactInfo = {
+    emailAddresses: contact.emailAddresses,
     firstName: contact.firstName,
     id: index.toString(),
     lastName: contact.lastName,
@@ -53,10 +54,19 @@ function mapContact(contact: IContactInfo, index: number) {
     }),
   };
 
-  contactData.phoneNumbers.forEach(async (phoneNumber: string) => {
-    const ids = await getUniqueIDs(phoneNumber);
-    contactData.messages[phoneNumber] = await getMessages(ids);
-  });
+  if (contactData.phoneNumbers.length > 0) {
+    contactData.phoneNumbers.forEach(async (phoneNumber: string) => {
+      const ids = await getUniqueIDs(phoneNumber);
+      contactData.messages[phoneNumber] = await getMessages(ids);
+    });
+  }
+
+  if (contactData.emailAddresses.length > 0) {
+    contactData.emailAddresses.forEach(async (emailAddress: string) => {
+      const ids = await getUniqueIDs(emailAddress);
+      contactData.messages[emailAddress] = await getMessages(ids);
+    });
+  }
 
   return contactData;
 }

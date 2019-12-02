@@ -22,10 +22,6 @@ const createWindow = () => {
 
   win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  ipcMain.handle('get-contact-data', async (event) => {
-    return getContacts();
-  });
-
   win.on('closed', () => { win = null; });
 };
 
@@ -36,6 +32,10 @@ app.on('ready', () => {
 
   initializeMessageData();
   createWindow();
+
+  ipcMain.handle('get-contact-data', async (event) => {
+    return getContacts();
+  });
 });
 
 app.on('window-all-closed', () => {
