@@ -25,13 +25,13 @@ const createWindow = () => {
   win.on('closed', () => { win = null; });
 };
 
-app.on('ready', () => {
+app.on('ready', async () => {
   if (isDevMode()) {
     setupDevTools();
   }
 
-  initializeMessageData();
   createWindow();
+  await initializeMessageData();
 
   ipcMain.handle('get-contact-data', async (event) => {
     return getContacts();

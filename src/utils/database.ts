@@ -12,23 +12,23 @@ let db: Database;
 
 /**
  * Fetches the unique id(s) from the message database corresponding
- * to a given phone number belonging to a Contact. Typically, a
- * phone number is associated  with only one id, but if you have
+ * to a given handle belonging to a Contact. Typically, a
+ * handle is associated  with only one id, but if you have
  * for example corresponded with them via SMS and iMessage, or
  * in a group chat, they can have multiple.
  *
  * @param contact - the basic data for a given Contact.
  * @param index - the unique index to associate with a Contact.
- * @returns an array containing all unique id(s) for a Contact's phone number.
+ * @returns an array containing all unique id(s) for a Contact's handle.
  */
-async function getUniqueIDs(phoneNumber: string): Promise<string[]> {
+async function getUniqueIDs(handle: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
-    const query = `SELECT ROWID from chat WHERE chat_identifier = '${phoneNumber}'`;
+    const query = `SELECT ROWID from chat WHERE chat_identifier = '${handle}'`;
     db.all(query, (err: string, data: any) => {
       if (err) {
         reject(err);
       } else {
-        const mapped = data.map((handle: any) => handle.ROWID);
+        const mapped = data.map((id: any) => id.ROWID);
         resolve(mapped);
       }
     });
@@ -85,7 +85,7 @@ async function getMessages(ids: string[]): Promise<IContactMessageData> {
         CASE WHEN LENGTH(date) >= 18
           THEN (date / 1000000000)
         ELSE date END AS adjusted_date,
-      date_read, is_from_me, cache_has_attachments, handle_id
+      date_read, is_from_me
       FROM message AS messageT
       INNER JOIN chat_message_join AS chatMessageT
         ON chatMessageT.chat_id IN (${ids.join(',')})
@@ -151,7 +151,7 @@ export async function initializeMessageData() {
  * Shuts down the connection to the message database
  */
 export function shutdownDatabase() {
-  // We don't really care if the database can be
+  // We don't really care if the database connection can be
   // closed successfully or not, since this will
   // only ever be called when we're already quitting.
   db.close();

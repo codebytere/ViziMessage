@@ -35,4 +35,4 @@ function ScatterGraph(props: {data: IContactMessageData}) {
   );
 }
 
-export default memo(ScatterGraph, (prev, next) => prev.data.total === next.data.total);
+export default memo(ScatterGraph);
