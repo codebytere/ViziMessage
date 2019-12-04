@@ -8,7 +8,7 @@ This app allows you to visualize some basic statistics about messages you've exc
 
 Contacts from your contact book are displayed on the left-hand side, and clicking on any given contact will load their related statistics.
 
-You can filter contacts with the search bae on the left-hand side.
+You can filter contacts with the search bar on the left-hand side.
 
 At present, it only takes into account what is in the messaging database on macOS, which means that it is not capable of showing statistics for messaging services other than SMS or iMessage.
 
