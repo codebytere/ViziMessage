@@ -1,5 +1,5 @@
 import '../styles/ContactView.css';
-import { getDomain, sumTextsForDates, timeFormat } from '../utils/graph';
+import { getDomain, labelFormat, sumTextsForDates, timeFormat } from '../utils/graph';
 
 import React, { memo } from 'react';
 import { CartesianGrid, Legend, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from 'recharts';
@@ -26,8 +26,8 @@ function ScatterGraph(props: {data: IContactMessageData}) {
         tickFormatter={timeFormat}
         domain={[start, end]}
       />
-      <YAxis type='number' dataKey='messageCount' name='Number of Messages' tick={{ fill: 'white' }} />
-      <Tooltip cursor={{ strokeDasharray: '2 2' }} />
+      <YAxis type='number' dataKey='messageCount' name='Messages' tick={{ fill: 'white' }} />
+      <Tooltip cursor={{ strokeDasharray: '2 2' }} formatter={labelFormat}/>
       <Legend />
       <Scatter name='From Me' fill='#ffffff' data={transformedFromMe} line={true} />
       <Scatter name='From Them' data={transformedFromThem} fill='#000000' line={true} />

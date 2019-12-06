@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { TooltipProps } from 'recharts';
 import { DAY } from '../constants';
 
 /**
@@ -50,6 +51,20 @@ export function sumTextsForDates(messages: IMessage[]) {
 export function timeFormat(time: number | string | Date) {
  return moment(time).format('MM/DD/YYYY');
 }
+
+/**
+ * Formats the date label more human-readably.
+ *
+ * @param value - a string reprenting the value for a given graph axis property
+ * @param name - the name of the graph axis value
+ * @returns a string with time formatted as YYYY-MM-DD.
+ */
+export const labelFormat = (value: any, name: string) => {
+  if (name === 'Date') {
+    return timeFormat(value);
+  }
+  return value;
+};
 
 /**
  * Fetches the start and end dates for the x-axis, based on the
