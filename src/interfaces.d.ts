@@ -8,9 +8,7 @@ interface IContactMessageData {
 
 interface IMessage {
   date: Date;
-  isAudioMessage: boolean;
   service: string;
-  body: string;
 }
 
 interface IContactInfo {

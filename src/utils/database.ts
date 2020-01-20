@@ -56,19 +56,23 @@ function mapContact(contact: IContactInfo, index: number) {
 
   if (contactData.phoneNumbers.length > 0) {
     contactData.phoneNumbers.forEach(async (phoneNumber: string) => {
-      const ids = await getUniqueIDs(phoneNumber);
-      contactData.messages[phoneNumber] = await getMessages(ids);
+      contactData.messages[phoneNumber] = await getMessagesForIdentifier(phoneNumber);
     });
   }
 
   if (contactData.emailAddresses.length > 0) {
     contactData.emailAddresses.forEach(async (emailAddress: string) => {
-      const ids = await getUniqueIDs(emailAddress);
-      contactData.messages[emailAddress] = await getMessages(ids);
+      contactData.messages[emailAddress] = await getMessagesForIdentifier(emailAddress);
     });
   }
 
   return contactData;
+}
+
+export async function getMessagesForIdentifier(identifier: string): Promise<IContactMessageData> {
+  const ids = await getUniqueIDs(identifier);
+  const messages = await getMessages(ids);
+  return messages;
 }
 
 /**
@@ -81,7 +85,7 @@ function mapContact(contact: IContactInfo, index: number) {
 async function getMessages(ids: string[]): Promise<IContactMessageData> {
   return new Promise((resolve, reject) => {
     const query = `
-      SELECT ROWID, text, service,
+      SELECT ROWID, service,
         CASE WHEN LENGTH(date) >= 18
           THEN (date / 1000000000)
         ELSE date END AS adjusted_date,

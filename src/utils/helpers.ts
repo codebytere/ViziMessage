@@ -45,9 +45,7 @@ export function cleanData(data: IRawData[]) {
 
   for (const raw of data) {
     const message = {
-      body: raw.text,
       date: formattedDate(raw.adjusted_date),
-      isAudioMessage: raw.is_audio_message ? true : false,
       service: raw.service,
     };
 
