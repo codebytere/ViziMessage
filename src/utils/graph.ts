@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { TooltipProps } from 'recharts';
 import { DAY } from '../constants';
 
 /**
@@ -17,7 +16,7 @@ export function sumTextsForDates(messages: IMessage[]) {
 
   // Used to set the iteration range so we can more accurately
   // step through message history of Contacts with wildly
-  // disparate messaging timespans.
+  // disparate messaging time-spans.
   const [first, last] = [
     new Date(messages[0].date).getTime(),
     new Date(messages[messages.length - 1].date).getTime(),
@@ -25,20 +24,20 @@ export function sumTextsForDates(messages: IMessage[]) {
 
   for (let time = first; time < last; time += DAY) {
     const day = new Date(time);
-    const filtered = messages.filter((m) => {
-      const d = new Date(m.date);
-      return (
-        day.getFullYear() === d.getFullYear() &&
-        day.getMonth() === d.getMonth() &&
-        day.getDate() === d.getDate()
-      );
-    });
+
+    const filtered: IMessage[] = [];
+    for (const message of messages) {
+      if (isSameDay(day, new Date(message.date))) {
+        filtered.push(message);
+      }
+    }
 
     formatted.push(({
       date: day.getTime(),
       messageCount: filtered.length,
     }));
   }
+
   return formatted;
 }
 
@@ -53,9 +52,23 @@ export function timeFormat(time: number | string | Date) {
 }
 
 /**
+ * Returns a boolean value indicating whether two dates represent the same day.
+ *
+ * @param first - the first date to compare.
+ * @param second - the second date to compare.
+ */
+const isSameDay = (first: Date, second: Date) => {
+  return (
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth() &&
+    first.getDate() === second.getDate()
+  );
+};
+
+/**
  * Formats the date label more human-readably.
  *
- * @param value - a string reprenting the value for a given graph axis property
+ * @param value - a string representing the value for a given graph axis property
  * @param name - the name of the graph axis value
  * @returns a string with time formatted as YYYY-MM-DD.
  */

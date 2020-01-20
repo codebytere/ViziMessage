@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { getContacts, initializeMessageData, shutdownDatabase } from './utils/database';
+import { getContacts, getMessagesForIdentifier, initializeMessageData, shutdownDatabase } from './utils/database';
 import { setupDevTools } from './utils/devtools';
 import { isDevMode } from './utils/helpers';
 
@@ -32,17 +32,24 @@ app.on('ready', async () => {
 
   createWindow();
   await initializeMessageData();
-
-  ipcMain.handle('get-contact-data', async (event) => {
-    return getContacts();
-  });
 });
 
 app.on('window-all-closed', () => {
   shutdownDatabase();
-  if (process.platform !== 'darwin') { app.quit(); }
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('activate', () => {
-  if (win === null) { createWindow(); }
+  if (win === null) {
+    createWindow();
+  }
+});
+
+ipcMain.handle('get-contact-data', async (event) => getContacts());
+
+ipcMain.handle('get-message-data', async (event, identifier) => {
+  const messageData = await getMessagesForIdentifier(identifier);
+  return messageData;
 });

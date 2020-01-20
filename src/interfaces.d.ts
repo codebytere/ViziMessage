@@ -17,7 +17,6 @@ interface IContactInfo {
   lastName: string;
   phoneNumbers: string[];
   emailAddresses: string[];
-  messages: Record<string, IContactMessageData>;
 }
 
 interface IDataPoint {
@@ -28,19 +27,15 @@ interface IDataPoint {
 
 interface IRawData {
   ROWID: number;
-  text: string;
   service: string;
   adjusted_date: number;
-  date_read: number;
-  cache_has_attachments: 0 | 1;
   is_from_me: 0 | 1;
-  is_audio_message: 0 | 1;
   handle_id: number;
 }
 
 /* COMPONENT PROP TYPINGS */
 
-interface IAppProps {
+interface IAppState {
   loading: boolean;
   contacts: IContactInfo[];
   selectedContact?: string;
@@ -49,4 +44,9 @@ interface IAppProps {
 interface IContactListProps {
   contacts: IContactInfo[];
   changeContact: (id: string) => void;
+}
+
+interface IContactViewState {
+  loading: boolean;
+  data: IContactMessageData;
 }

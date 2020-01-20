@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron';
 import React from 'react';
 import { Box, Section, Tile } from 'react-bulma-components';
 import { getDomain, timeFormat } from '../utils/graph';
@@ -5,20 +6,52 @@ import ScatterGraph from './ScatterGraph';
 
 import '../styles/ContactView.css';
 
-class ContactView extends React.Component<{contact: IContactInfo}, {}> {
-  public render() {
-    const { firstName, lastName, messages } = this.props.contact;
-    const data = messages[Object.keys(messages)[0]];
+class ContactView extends React.Component<{contact: IContactInfo}, IContactViewState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      data: {} as any as IContactMessageData,
+      loading: true,
+    };
+  }
 
-    return (
-      <div>
-        <h2 className='contact'>{firstName} {lastName}</h2>
-        {data.total === 0 ? this.renderNoData() : this.renderData(firstName, data)}
-      </div>
-    );
+  public componentDidMount() {
+    const { phoneNumbers, emailAddresses } = this.props.contact;
+    const id = (phoneNumbers.length > 0) ? phoneNumbers[0] : emailAddresses[0];
+    this.fetchContactData(id);
+  }
+
+  public componentDidUpdate(prevProps: any) {
+    if (prevProps.contact !== this.props.contact) {
+      this.setState({ loading: true });
+      const { phoneNumbers, emailAddresses } = this.props.contact;
+      const id = (phoneNumbers.length > 0) ? phoneNumbers[0] : emailAddresses[0];
+      this.fetchContactData(id);
+    }
+  }
+
+  public render() {
+    const { firstName, lastName } = this.props.contact;
+    const data =  this.state.data;
+
+    if (this.state.loading) {
+      return (<div className='loading'/>);
+    } else {
+      return (
+        <div>
+          <h2 className='contact'>{firstName} {lastName}</h2>
+          {data.total === 0 ? this.renderNoData() : this.renderData(firstName, data)}
+        </div>
+      );
+    }
   }
 
   /* PRIVATE INSTANCE METHODS */
+
+  private async fetchContactData(identifier: string) {
+    const data: IContactMessageData = await ipcRenderer.invoke('get-message-data', identifier);
+    this.setState({ loading: false, data });
+  }
 
   private renderNoData() {
     return (

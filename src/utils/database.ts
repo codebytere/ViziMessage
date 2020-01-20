@@ -48,23 +48,10 @@ function mapContact(contact: IContactInfo, index: number) {
     firstName: contact.firstName,
     id: index.toString(),
     lastName: contact.lastName,
-    messages: {},
     phoneNumbers: contact.phoneNumbers.map((n: string) => {
       return normalizeNumber(n);
     }),
   };
-
-  if (contactData.phoneNumbers.length > 0) {
-    contactData.phoneNumbers.forEach(async (phoneNumber: string) => {
-      contactData.messages[phoneNumber] = await getMessagesForIdentifier(phoneNumber);
-    });
-  }
-
-  if (contactData.emailAddresses.length > 0) {
-    contactData.emailAddresses.forEach(async (emailAddress: string) => {
-      contactData.messages[emailAddress] = await getMessagesForIdentifier(emailAddress);
-    });
-  }
 
   return contactData;
 }

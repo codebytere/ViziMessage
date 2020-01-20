@@ -10,20 +10,19 @@ import 'react-bulma-components/dist/react-bulma-components.min.css';
 import '../styles/App.css';
 import '../styles/Loader.css';
 
-class App extends React.Component<{}, IAppProps> {
+class App extends React.Component<{}, IAppState> {
   constructor(props: any) {
     super(props);
     this.state = { loading: true, contacts: [] };
     this.selectNewContact = this.selectNewContact.bind(this);
   }
 
-  public componentDidMount() {
-    ipcRenderer.invoke('get-contact-data').then((contacts: IContactInfo[]) => {
-      this.setState({
-        contacts,
-        loading: false,
-        selectedContact: contacts[0].id,
-      });
+  public async componentDidMount() {
+    const contacts: IContactInfo[] = await ipcRenderer.invoke('get-contact-data');
+    this.setState({
+      contacts,
+      loading: false,
+      selectedContact: contacts[0].id,
     });
   }
 
