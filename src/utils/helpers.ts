@@ -10,8 +10,8 @@
  * @returns the normalized number in E.164 format.
  */
 export function normalizeNumber(rawNumber: string) {
-  const stripped = rawNumber.replace(/\D/g, '');
-  return stripped.length === 10 ? `+1${stripped}` : `+${stripped}`;
+  const stripped = rawNumber.replace(/\D/g, '')
+  return stripped.length === 10 ? `+1${stripped}` : `+${stripped}`
 }
 
 /**
@@ -21,13 +21,17 @@ export function normalizeNumber(rawNumber: string) {
  * @returns a Date object created from the timestamp.
  */
 export function formattedDate(ts: number) {
-  const DATE_OFFSET = 978307200;
-  if (ts.toString().length >= 18) { ts = ts / 1000000000; }
+  const DATE_OFFSET = 978307200
+  if (ts.toString().length >= 18) {
+    ts = ts / 1000000000
+  }
 
-  const unpacked = Math.floor(ts / Math.pow(10, 9));
-  if (unpacked !== 0) { ts = unpacked; }
+  const unpacked = Math.floor(ts / Math.pow(10, 9))
+  if (unpacked !== 0) {
+    ts = unpacked
+  }
 
-  return new Date((ts + DATE_OFFSET) * 1000);
+  return new Date((ts + DATE_OFFSET) * 1000)
 }
 
 /**
@@ -41,24 +45,24 @@ export function cleanData(data: IRawData[]) {
     fromMe: [],
     fromThem: [],
     total: 0,
-  };
+  }
 
   for (const raw of data) {
     const message = {
       date: formattedDate(raw.adjusted_date),
       service: raw.service,
-    };
+    }
 
     if (raw.is_from_me === 1) {
-      cleaned.fromMe.push(message);
+      cleaned.fromMe.push(message)
     } else {
-      cleaned.fromThem.push(message);
+      cleaned.fromThem.push(message)
     }
   }
 
-  cleaned.total = cleaned.fromMe.length + cleaned.fromThem.length;
+  cleaned.total = cleaned.fromMe.length + cleaned.fromThem.length
 
-  return cleaned;
+  return cleaned
 }
 
 /**
@@ -67,5 +71,5 @@ export function cleanData(data: IRawData[]) {
  * @returns a boolean that is true if we are running in dev mode.
  */
 export function isDevMode(): boolean {
-  return !!process.defaultApp;
+  return !!process.defaultApp
 }

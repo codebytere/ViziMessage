@@ -1,10 +1,15 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
-import { getContacts, getMessagesForIdentifier, initializeMessageData, shutdownDatabase } from './utils/database';
-import { setupDevTools } from './utils/devtools';
-import { isDevMode } from './utils/helpers';
+import { app, BrowserWindow, ipcMain } from 'electron'
+import {
+  getContacts,
+  getMessagesForIdentifier,
+  initializeMessageData,
+  shutdownDatabase,
+} from './utils/database'
+import { setupDevTools } from './utils/devtools'
+import { isDevMode } from './utils/helpers'
 
 // Webpack declares this, so we just need to tell TypeScript it'll be real
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
+declare const MAIN_WINDOW_WEBPACK_ENTRY: any
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -16,36 +21,36 @@ const createWindow = () => {
       nodeIntegration: true,
     },
     width: 1200,
-  });
+  })
 
-  win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-};
+  win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+}
 
 app.on('ready', async () => {
   if (isDevMode()) {
-    setupDevTools();
+    setupDevTools()
   }
 
-  createWindow();
-  await initializeMessageData();
-});
+  createWindow()
+  await initializeMessageData()
+})
 
 app.on('window-all-closed', () => {
-  shutdownDatabase();
+  shutdownDatabase()
   if (process.platform !== 'darwin') {
-    app.quit();
+    app.quit()
   }
-});
+})
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
-});
+})
 
-ipcMain.handle('get-contact-data', async (event) => getContacts());
+ipcMain.handle('get-contact-data', async event => getContacts())
 
 ipcMain.handle('get-message-data', async (event, identifier) => {
-  const messageData = await getMessagesForIdentifier(identifier);
-  return messageData;
-});
+  const messageData = await getMessagesForIdentifier(identifier)
+  return messageData
+})

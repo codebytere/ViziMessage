@@ -1,5 +1,5 @@
-import moment from 'moment';
-import { DAY } from '../constants';
+import moment from 'moment'
+import { DAY } from '../constants'
 
 /**
  * Transforms a set of message objects into a set of plot
@@ -12,7 +12,7 @@ import { DAY } from '../constants';
  * containing a date and number of messages sent on that date.
  */
 export function sumTextsForDates(messages: IMessage[]) {
-  const formatted: IDataPoint[] = [];
+  const formatted: IDataPoint[] = []
 
   // Used to set the iteration range so we can more accurately
   // step through message history of Contacts with wildly
@@ -20,25 +20,25 @@ export function sumTextsForDates(messages: IMessage[]) {
   const [first, last] = [
     new Date(messages[0].date).getTime(),
     new Date(messages[messages.length - 1].date).getTime(),
-  ];
+  ]
 
   for (let time = first; time < last; time += DAY) {
-    const day = new Date(time);
+    const day = new Date(time)
 
-    const filtered: IMessage[] = [];
+    const filtered: IMessage[] = []
     for (const message of messages) {
       if (isSameDay(day, new Date(message.date))) {
-        filtered.push(message);
+        filtered.push(message)
       }
     }
 
-    formatted.push(({
+    formatted.push({
       date: day.getTime(),
       messageCount: filtered.length,
-    }));
+    })
   }
 
-  return formatted;
+  return formatted
 }
 
 /**
@@ -48,7 +48,7 @@ export function sumTextsForDates(messages: IMessage[]) {
  * @returns a string with time formatted as YYYY-MM-DD.
  */
 export function timeFormat(time: number | string | Date) {
- return moment(time).format('MM/DD/YYYY');
+  return moment(time).format('MM/DD/YYYY')
 }
 
 /**
@@ -62,8 +62,8 @@ const isSameDay = (first: Date, second: Date) => {
     first.getFullYear() === second.getFullYear() &&
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate()
-  );
-};
+  )
+}
 
 /**
  * Formats the date label more human-readably.
@@ -74,10 +74,10 @@ const isSameDay = (first: Date, second: Date) => {
  */
 export const labelFormat = (value: any, name: string) => {
   if (name === 'Date') {
-    return timeFormat(value);
+    return timeFormat(value)
   }
-  return value;
-};
+  return value
+}
 
 /**
  * Fetches the start and end dates for the x-axis, based on the
@@ -91,13 +91,13 @@ export const labelFormat = (value: any, name: string) => {
  * x-axis in milliseconds.
  */
 export function getDomain(fromMe: IMessage[], fromThem: IMessage[]) {
-  const meStart = new Date(fromMe[0].date).getTime();
-  const themStart = new Date(fromThem[0].date).getTime();
-  const start = (meStart > themStart) ? themStart : meStart;
+  const meStart = new Date(fromMe[0].date).getTime()
+  const themStart = new Date(fromThem[0].date).getTime()
+  const start = meStart > themStart ? themStart : meStart
 
-  const meEnd = new Date(fromMe[fromMe.length - 1].date).getTime();
-  const themEnd = new Date(fromThem[fromThem.length - 1].date).getTime();
-  const end = (meEnd > themEnd) ? meEnd : themEnd;
+  const meEnd = new Date(fromMe[fromMe.length - 1].date).getTime()
+  const themEnd = new Date(fromThem[fromThem.length - 1].date).getTime()
+  const end = meEnd > themEnd ? meEnd : themEnd
 
-  return ([start, end]);
+  return [start, end]
 }

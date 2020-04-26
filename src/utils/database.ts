@@ -1,12 +1,12 @@
-import { app } from 'electron';
-import { getAllContacts, getAuthStatus } from 'node-mac-contacts';
-import { homedir } from 'os';
-import { Database, OPEN_READWRITE } from 'sqlite3';
-import { runContactsFailureDialog, runFDAFailureDialog } from './dialogs';
-import { cleanData, normalizeNumber } from './helpers';
+import { app } from 'electron'
+import { getAllContacts, getAuthStatus } from 'node-mac-contacts'
+import { homedir } from 'os'
+import { Database, OPEN_READWRITE } from 'sqlite3'
+import { runContactsFailureDialog, runFDAFailureDialog } from './dialogs'
+import { cleanData, normalizeNumber } from './helpers'
 
-let contacts: IContactInfo[] = [];
-let db: Database;
+let contacts: IContactInfo[] = []
+let db: Database
 
 /***** HELPER FUNCTIONS *****/
 
@@ -23,16 +23,16 @@ let db: Database;
  */
 async function getUniqueIDs(handle: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
-    const query = `SELECT ROWID from chat WHERE chat_identifier = '${handle}'`;
+    const query = `SELECT ROWID from chat WHERE chat_identifier = '${handle}'`
     db.all(query, (err: string, data: any) => {
       if (err) {
-        reject(err);
+        reject(err)
       } else {
-        const mapped = data.map((id: any) => id.ROWID);
-        resolve(mapped);
+        const mapped = data.map((id: any) => id.ROWID)
+        resolve(mapped)
       }
-    });
-  });
+    })
+  })
 }
 
 /**
@@ -49,17 +49,19 @@ function mapContact(contact: IContactInfo, index: number) {
     id: index.toString(),
     lastName: contact.lastName,
     phoneNumbers: contact.phoneNumbers.map((n: string) => {
-      return normalizeNumber(n);
+      return normalizeNumber(n)
     }),
-  };
+  }
 
-  return contactData;
+  return contactData
 }
 
-export async function getMessagesForIdentifier(identifier: string): Promise<IContactMessageData> {
-  const ids = await getUniqueIDs(identifier);
-  const messages = await getMessages(ids);
-  return messages;
+export async function getMessagesForIdentifier(
+  identifier: string,
+): Promise<IContactMessageData> {
+  const ids = await getUniqueIDs(identifier)
+  const messages = await getMessages(ids)
+  return messages
 }
 
 /**
@@ -82,17 +84,17 @@ async function getMessages(ids: string[]): Promise<IContactMessageData> {
         ON chatMessageT.chat_id IN (${ids.join(',')})
         AND messageT.ROWID = chatMessageT.message_id
       ORDER BY adjusted_date
-    `;
+    `
 
     db.all(query, (err, data: IRawData[]) => {
       if (err) {
-        reject(err);
+        reject(err)
       } else {
-        const cleaned = cleanData(data);
-        resolve(cleaned);
+        const cleaned = cleanData(data)
+        resolve(cleaned)
       }
-    });
-  });
+    })
+  })
 }
 
 /**
@@ -102,13 +104,13 @@ async function getMessages(ids: string[]): Promise<IContactMessageData> {
  */
 async function openDatabaseConnection() {
   // TODO(codebytere): allow users to specify custom db path.
-  const messageDBPath = `${homedir()}/Library/Messages/chat.db`;
-  db = new Database(messageDBPath, OPEN_READWRITE, async (err) => {
+  const messageDBPath = `${homedir()}/Library/Messages/chat.db`
+  db = new Database(messageDBPath, OPEN_READWRITE, async err => {
     if (err) {
-      await runFDAFailureDialog();
-      app.quit();
+      await runFDAFailureDialog()
+      app.quit()
     }
-  });
+  })
 }
 
 /***** EXPORTED FUNCTIONS *****/
@@ -118,7 +120,7 @@ async function openDatabaseConnection() {
  *
  * @returns the array of all initialized Contacts.
  */
-export const getContacts = () => contacts;
+export const getContacts = () => contacts
 
 /**
  * Creates and opens a connection to the message Database, and maps
@@ -126,15 +128,15 @@ export const getContacts = () => contacts;
  * contacts store.
  */
 export async function initializeMessageData() {
-  const status = getAuthStatus();
+  const status = getAuthStatus()
   if (status === 'Denied') {
-    await runContactsFailureDialog();
-    app.quit();
+    await runContactsFailureDialog()
+    app.quit()
   } else {
-    await openDatabaseConnection();
+    await openDatabaseConnection()
     contacts = getAllContacts().map((c: IContactInfo, idx: number) => {
-      return mapContact(c, idx);
-    });
+      return mapContact(c, idx)
+    })
   }
 }
 
@@ -145,5 +147,5 @@ export function shutdownDatabase() {
   // We don't really care if the database connection can be
   // closed successfully or not, since this will
   // only ever be called when we're already quitting.
-  db.close();
+  db.close()
 }

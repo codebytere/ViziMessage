@@ -8,15 +8,15 @@ export async function setupDevTools(): Promise<void> {
     default: installExtension,
     REACT_DEVELOPER_TOOLS,
     REACT_PERF,
-  } = require('electron-devtools-installer');
+  } = require('electron-devtools-installer')
 
   try {
-    const react = await installExtension(REACT_DEVELOPER_TOOLS);
-    console.log(`installDevTools: Installed ${react}`);
+    const react = await installExtension(REACT_DEVELOPER_TOOLS)
+    console.log(`installDevTools: Installed ${react}`)
 
-    const perf = await installExtension(REACT_PERF);
-    console.log(`installDevTools: Installed ${perf}`);
+    const perf = await installExtension(REACT_PERF)
+    console.log(`installDevTools: Installed ${perf}`)
   } catch (error) {
-    console.warn(`installDevTools: Error occurred:`, error);
+    console.warn(`installDevTools: Error occurred:`, error)
   }
 }
