@@ -60,7 +60,7 @@
     "node-mac-contacts": "^0.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "recharts": "^1.8.5",
+    "recharts": "^2.1.14",
     "sqlite3": "^4.1.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2"
